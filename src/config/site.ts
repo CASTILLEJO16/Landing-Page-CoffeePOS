@@ -27,7 +27,7 @@ export const site = {
 // Un solo plan con todo lo que incluye el sistema.
 export const plan = {
   name: 'Plan Completo',
-  price: '___', // TODO: precio mensual en pesos, ej. '499'
+  price: '600', // precio mensual en pesos
   currency: 'MXN',
   period: 'mes',
   badges: ['Primer mes gratis', 'Sin pago inicial'],
