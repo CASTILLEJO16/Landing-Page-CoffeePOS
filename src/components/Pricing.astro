@@ -1,0 +1,53 @@
+---
+import { plan } from '../config/site';
+import WhatsAppButton from './WhatsAppButton.astro';
+import Logo from './Logo.astro';
+
+const check = 'M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.58l7.3-7.3a1 1 0 0 1 1.4 0Z';
+---
+
+<section id="precio" class="scroll-mt-16 overflow-hidden bg-crema-200/60 py-20 lg:py-28">
+  <div class="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1fr_auto] lg:gap-20">
+    <div class="text-center lg:text-left" data-reveal>
+      <h2 class="text-4xl leading-[1.08] text-balance sm:text-5xl">Un solo plan, con <em>todo</em> incluido</h2>
+      <p class="mx-auto mt-5 max-w-md text-lg text-cafe-700 lg:mx-0">Sin letras chiquitas ni costos escondidos.</p>
+    </div>
+
+    <!-- El ticket: la sombra va en el contenedor porque la máscara dentada la recortaría -->
+    <div class="mx-auto w-full max-w-md drop-shadow-[0_30px_50px_rgb(0_0_0/0.55)] lg:mx-0 lg:w-[28rem]" data-reveal="print">
+      <div class="ticket-edge bg-papel px-7 pt-10 pb-11 text-tinta sm:px-9">
+        <div class="flex items-center justify-center gap-2" aria-hidden="true">
+          <Logo class="size-6" />
+          <span class="font-mono text-sm font-bold tracking-[0.2em]">COFFEE POS</span>
+        </div>
+        <hr class="ticket-rule mt-5" />
+
+        <div class="mt-6 flex flex-wrap justify-center gap-2">
+          {plan.badges.map((b, i) => (
+            <span class={`kicker rounded-md border-2 border-dashed border-acento-800/60 px-2.5 py-1 text-acento-800 ${i % 2 ? 'rotate-1' : '-rotate-1'}`}>{b}</span>
+          ))}
+        </div>
+
+        <h3 class="mt-6 text-center font-display text-2xl font-semibold">{plan.name}</h3>
+        <p class="mt-2 flex items-baseline justify-center gap-1.5">
+          <span class="font-display text-6xl font-semibold tracking-tight">${plan.price}</span>
+          <span class="font-mono text-sm font-semibold text-tinta/65">{plan.currency}/{plan.period}</span>
+        </p>
+
+        <hr class="ticket-rule mt-7" />
+        <ul class="mt-6 space-y-3">
+          {plan.includes.map((item) => (
+            <li class="flex gap-3">
+              <svg viewBox="0 0 20 20" class="mt-0.5 size-5 shrink-0 text-acento-800" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d={check} clip-rule="evenodd" /></svg>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <hr class="ticket-rule mt-7" />
+
+        <WhatsAppButton class="mt-7 w-full" />
+        {plan.note && <p class="mt-4 text-center font-mono text-xs text-tinta/65">{plan.note}</p>}
+      </div>
+    </div>
+  </div>
+</section>

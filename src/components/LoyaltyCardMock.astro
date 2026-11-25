@@ -1,0 +1,58 @@
+---
+// Ilustración de la tarjeta de lealtad digital (HTML/SVG, no es captura).
+// Los sellos se "ponen" uno por uno cuando el bloque entra en pantalla (ver .stamp en global.css).
+const total = 10;
+const filled = 7;
+
+// Patrón decorativo tipo QR (determinista, sin significado).
+const qr: [number, number][] = [];
+for (let y = 0; y < 9; y++) {
+  for (let x = 0; x < 9; x++) {
+    const finder = (x < 3 && y < 3) || (x > 5 && y < 3) || (x < 3 && y > 5);
+    if (!finder && (x * 7 + y * 3 + x * y) % 3 === 0) qr.push([x, y]);
+  }
+}
+const finders = [[0, 0], [6, 0], [0, 6]];
+---
+
+<div class="flex justify-center" role="img" aria-label="Ilustración de una tarjeta de lealtad digital en el celular: 7 de 10 sellos y un código QR para escanear en caja">
+  <div class="relative w-72 sm:w-80" aria-hidden="true">
+    <!-- Halo cálido detrás (estático) -->
+    <div class="absolute -inset-8 -z-10 rounded-full bg-[radial-gradient(closest-side,rgb(242_191_138/0.55),transparent)]"></div>
+
+    <div class="rounded-[1.75rem] bg-crema-50 p-6 text-cafe-900 shadow-lift ring-1 ring-cafe-900/10">
+      <div class="flex items-center justify-between">
+        <span class="font-display text-lg font-semibold">Tu cafetería</span>
+        <span class="rounded-full bg-acento-500/15 px-2.5 py-1 text-[11px] font-bold tracking-wide text-acento-700 uppercase">Lealtad</span>
+      </div>
+      <p class="mt-1 text-sm text-cafe-700">Ana · tarjeta de sellos</p>
+
+      <div class="mt-6 grid grid-cols-5 gap-2.5">
+        {Array.from({ length: total }, (_, i) => (
+          <span class="relative grid aspect-square place-items-center rounded-full border-2 border-dashed border-cafe-500/70">
+            {i < filled && (
+              <span class="stamp absolute inset-[-2px] grid place-items-center rounded-full bg-acento-500 text-tinta shadow-glow" style={`--i: ${i}`}>
+                <svg viewBox="0 0 24 24" class="size-[55%]" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h11v4a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9Zm11 1.5h1.2a2.3 2.3 0 0 1 0 4.6H16" /></svg>
+              </span>
+            )}
+          </span>
+        ))}
+      </div>
+      <p class="mt-4 text-sm font-semibold"><span class="text-acento-700">{filled}</span> de {total} sellos</p>
+
+      <div class="mt-6 flex items-center gap-4 rounded-2xl bg-papel p-3 text-tinta">
+        <svg viewBox="0 0 9 9" class="size-20 shrink-0" shape-rendering="crispEdges">
+          {finders.map(([x, y]) => (
+            <g>
+              <rect x={x} y={y} width="3" height="3" fill="#171412" />
+              <rect x={x + 0.5} y={y + 0.5} width="2" height="2" fill="#ffffff" />
+              <rect x={x + 1} y={y + 1} width="1" height="1" fill="#171412" />
+            </g>
+          ))}
+          {qr.map(([x, y]) => <rect x={x} y={y} width="1" height="1" fill="#171412" />)}
+        </svg>
+        <p class="text-sm leading-snug font-semibold">Muéstralo en caja para sumar tu sello</p>
+      </div>
+    </div>
+  </div>
+</div>

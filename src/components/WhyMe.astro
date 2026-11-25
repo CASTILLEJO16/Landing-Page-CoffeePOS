@@ -1,0 +1,68 @@
+---
+import { site } from '../config/site';
+
+const reasons = [
+  {
+    icon: 'M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Zm0-9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z',
+    title: 'Soporte local en Tijuana',
+    text: 'No hablas con un call center en otro país. Estoy aquí, en tu misma ciudad.',
+  },
+  {
+    icon: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z',
+    title: 'Instalación y capacitación en persona',
+    text: 'Voy a tu cafetería, cargamos tu menú juntos y le enseño a tu equipo a usarlo.',
+  },
+  {
+    icon: 'M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 0 1 4 12a8.5 8.5 0 0 1 8.5-8.5h.5a8.5 8.5 0 0 1 8 8v.5Z',
+    title: 'Atención por WhatsApp',
+    text: '¿Duda o algo no jala? Me escribes por WhatsApp y te respondo directo.',
+  },
+];
+
+const initials = site.author
+  .split(' ')
+  .filter((_, i, a) => i === 0 || i === a.length - 1)
+  .map((w) => w[0])
+  .join('');
+---
+
+<section class="grain relative isolate overflow-hidden bg-cafe-950 py-20 text-cafe-900 lg:py-28">
+  <!-- Resplandor cálido (decorativo, estático) -->
+  <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(50%_70%_at_100%_0%,rgb(242_106_33/0.2),transparent_70%)]" aria-hidden="true"></div>
+
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
+      <div data-reveal>
+        <h2 class="text-4xl leading-[1.05] text-balance sm:text-5xl">
+          No estás comprando un programa: tienes a alguien que te <em>respalda</em>
+        </h2>
+      </div>
+
+      <div class="flex flex-col justify-end" data-reveal style="--delay: 90ms">
+        <div class="flex items-center gap-4">
+          <span class="grid size-14 shrink-0 place-items-center rounded-full bg-acento-500 font-display text-xl font-semibold text-tinta" aria-hidden="true">{initials}</span>
+          <div class="h-px flex-1 bg-cafe-900/15" aria-hidden="true"></div>
+        </div>
+        <p class="mt-6 text-lg leading-relaxed text-cafe-700">
+          Soy <span class="font-display text-xl font-semibold text-cafe-900">{site.author}</span>, {site.authorBio.charAt(0).toLowerCase() + site.authorBio.slice(1)}
+          Desarrollé Coffee POS y te atiendo yo mismo.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-16 grid gap-px overflow-hidden rounded-2xl bg-cafe-900/10 md:grid-cols-3" data-reveal style="--delay: 60ms">
+      {reasons.map((r, i) => (
+        <div class="bg-cafe-950 p-7 sm:p-8">
+          <div class="flex items-center justify-between">
+            <span class="grid size-11 place-items-center rounded-xl bg-acento-500/10 text-acento-700" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={r.icon} /></svg>
+            </span>
+            <span class="font-mono text-sm text-cafe-900/35" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <h3 class="mt-6 text-xl font-bold">{r.title}</h3>
+          <p class="mt-2 leading-relaxed text-cafe-700">{r.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

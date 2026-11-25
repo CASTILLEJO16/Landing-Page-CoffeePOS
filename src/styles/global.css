@@ -1,0 +1,345 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/outfit';
+@import '@fontsource-variable/rubik';
+@import '@fontsource-variable/jetbrains-mono';
+
+/* ============================================================
+   DESIGN SYSTEM — Coffee POS
+   Estilo: minimalista oscuro "espresso". Fondo café casi negro, texto crema,
+   UN solo acento naranja (el de la taza del logo) y sombras profundas en capas.
+   Tipografía: Outfit (títulos) + Rubik (texto) + JetBrains Mono (detalles de ticket).
+
+   Nombres por FUNCIÓN (no por color), así un cambio de tema no toca componentes:
+   crema = fondos y superficies · cafe = texto (900 = principal) · acento = naranja.
+   papel / tinta = colores FIJOS para lo que siempre es claro (tickets, QR, botón naranja).
+   ============================================================ */
+@theme {
+  --font-sans: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Fondos y superficies (espresso) */
+  --color-crema-50: #201914;  /* tarjetas */
+  --color-crema-100: #14100d; /* fondo de página */
+  --color-crema-200: #1a1410; /* bandas alternas */
+  --color-crema-300: #3a2f27; /* bordes */
+
+  /* Texto (crema sobre espresso) */
+  --color-cafe-500: #8a7b6e;  /* decorativo (números, íconos) */
+  --color-cafe-700: #bfb1a3;  /* texto secundario: 8.9:1 */
+  --color-cafe-800: #e3d8cc;
+  --color-cafe-900: #f5ede3;  /* texto principal: 16:1 */
+  --color-cafe-950: #0c0907;  /* secciones más oscuras */
+
+  /* Fijos */
+  --color-papel: #fbf5ec;
+  --color-tinta: #14100d;
+
+  /* Acento naranja */
+  --color-acento-300: #ffc29a;
+  --color-acento-400: #ff8a4c;
+  --color-acento-500: #f26a21; /* botón principal, siempre con texto tinta (6.6:1) */
+  --color-acento-600: #e2621c; /* íconos */
+  --color-acento-700: #ff9a5c; /* texto de acento sobre espresso: 8.3:1 */
+  --color-acento-800: #b8480c; /* texto de acento sobre papel: 5.4:1 */
+
+  /* Sombras profundas en capas + brillo naranja */
+  --shadow-soft:
+    0 1px 0 rgb(255 255 255 / 0.04) inset,
+    0 1px 2px rgb(0 0 0 / 0.4),
+    0 12px 32px -12px rgb(0 0 0 / 0.6);
+  --shadow-lift:
+    0 1px 2px rgb(0 0 0 / 0.5),
+    0 20px 40px -16px rgb(0 0 0 / 0.7),
+    0 50px 100px -30px rgb(0 0 0 / 0.8);
+  --shadow-glow: 0 10px 34px -6px rgb(242 106 33 / 0.55);
+
+  /* Motion: curvas fuertes (Emil Kowalski) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-crema-100 text-cafe-900 font-sans antialiased;
+}
+
+::selection {
+  background: var(--color-acento-500);
+  color: var(--color-tinta);
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+}
+
+/* Palabra destacada en un título: color de acento + subrayado tipo marcador
+   que se "pinta" de izquierda a derecha (scaleX, corre en el compositor). */
+h1 em,
+h2 em {
+  position: relative;
+  z-index: 0;
+  font-style: normal;
+  white-space: nowrap;
+  color: var(--color-acento-700);
+}
+h1 em::after,
+h2 em::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: -0.04em;
+  right: -0.04em;
+  bottom: 0.06em;
+  height: 0.26em;
+  border-radius: 0.1em;
+  background: var(--color-acento-500);
+  opacity: 0.3;
+  transform-origin: left center;
+  transition: transform 700ms var(--ease-out) 350ms;
+}
+/* Sobre el bloque naranja */
+.on-accent em { color: var(--color-tinta); }
+.on-accent em::after { background: var(--color-papel); opacity: 0.4; }
+
+/* El subrayado del hero se pinta al cargar; los demás al aparecer en pantalla. */
+h1 em::after { animation: paint-in 800ms var(--ease-out) 650ms both; }
+@keyframes paint-in { from { transform: scaleX(0); } }
+.js [data-reveal] em::after { transform: scaleX(0); }
+.js [data-reveal].is-visible em::after { transform: none; }
+
+summary::-webkit-details-marker { display: none; }
+
+/* ------------------------------------------------------------
+   Detalles de "ticket" (un guiño a la impresora térmica, sin exagerar)
+   ------------------------------------------------------------ */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Bordes dentados arriba y abajo. La sombra va en el contenedor con drop-shadow. */
+.ticket-edge {
+  --tooth: 14px;
+  mask:
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / var(--tooth) 51% repeat-x,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / var(--tooth) 51% repeat-x;
+}
+
+.ticket-rule {
+  border: 0;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, currentColor 0 6px, transparent 6px 11px);
+  opacity: 0.25;
+}
+
+/* Grano muy sutil, solo para secciones oscuras. Requiere .relative + .isolate. */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Cuadrícula de puntos muy tenue para el fondo del hero */
+.dot-grid {
+  background-image: radial-gradient(rgb(245 237 227 / 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(70% 60% at 50% 40%, #000 30%, transparent 100%);
+}
+
+/* ------------------------------------------------------------
+   Micro-interacciones
+   ------------------------------------------------------------ */
+
+/* Presión de botón: confirma que la interfaz escuchó el toque. */
+.press {
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 200ms ease,
+    color 200ms ease,
+    box-shadow 250ms ease;
+}
+.press:active {
+  transform: scale(0.97);
+}
+
+/* Botón que se eleva un poco al pasar el mouse (solo con puntero). */
+@media (hover: hover) and (pointer: fine) {
+  .lift:hover { transform: translateY(-2px); }
+  .lift:active { transform: translateY(0) scale(0.97); }
+}
+
+/* Tarjeta que se eleva al pasar el mouse (solo con puntero) */
+.card-hover {
+  transition:
+    transform 300ms var(--ease-out),
+    box-shadow 300ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+/* Flecha que avanza al pasar el mouse. */
+.nudge-arrow {
+  display: inline-block;
+  transition: transform 200ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .nudge-arrow { transform: translateX(3px); }
+}
+
+/* Acordeón de preguntas: abre suave donde el navegador lo soporta (Chrome 131+). */
+@supports (interpolate-size: allow-keywords) {
+  .faq { interpolate-size: allow-keywords; }
+  .faq details::details-content {
+    block-size: 0;
+    overflow: clip;
+    opacity: 0;
+    transition:
+      block-size 240ms var(--ease-out),
+      opacity 200ms ease,
+      content-visibility 240ms allow-discrete;
+  }
+  .faq details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+.faq-icon { transition: transform 240ms var(--ease-out); }
+.faq details[open] .faq-icon { transform: rotate(45deg); }
+
+/* ------------------------------------------------------------
+   Entrada del hero al cargar (CSS puro: corre en el compositor)
+   ------------------------------------------------------------ */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(12px); }
+}
+.rise-in {
+  animation: rise-in 700ms var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.94); }
+}
+.pop-in {
+  animation: pop-in 600ms var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Flotación muy lenta de las etiquetas del hero (decorativa, 7 s, 6 px). */
+@keyframes float {
+  50% { transform: translateY(-6px); }
+}
+.float {
+  animation: float 7s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+/* La captura del hero se aleja un poco al hacer scroll (scroll-driven, en el compositor).
+   Solo en navegadores que lo soportan; en el resto queda fija. */
+@supports (animation-timeline: scroll()) {
+  @keyframes hero-drift {
+    to { transform: translateY(-36px) scale(0.97); }
+  }
+  .hero-drift {
+    animation: hero-drift linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 700px;
+  }
+}
+
+/* ------------------------------------------------------------
+   Aparición al hacer scroll (una vez por bloque).
+   Solo se oculta si hay JS (clase .js en <html>): sin JS todo se ve normal.
+   ------------------------------------------------------------ */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 600ms var(--ease-out),
+    transform 800ms var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* El ticket de precio "se imprime": se descubre de arriba hacia abajo. */
+.js [data-reveal='print'] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1100ms var(--ease-in-out);
+}
+.js [data-reveal='print'].is-visible {
+  clip-path: inset(-40px -40px -60px -40px);
+}
+
+/* Sellos de la tarjeta de lealtad: se ponen uno por uno al aparecer. */
+.js [data-reveal] .stamp {
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 250ms var(--ease-out),
+    transform 350ms var(--ease-out);
+  transition-delay: calc(350ms + var(--i, 0) * 90ms);
+}
+.js [data-reveal].is-visible .stamp {
+  opacity: 1;
+  transform: none;
+}
+
+/* ------------------------------------------------------------
+   Movimiento reducido: sin desplazamientos, solo fundidos cortos.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  @keyframes fade-in { from { opacity: 0; } }
+  .rise-in,
+  .pop-in { animation-name: fade-in; animation-duration: 300ms; }
+  .float,
+  .hero-drift { animation: none; }
+  h1 em::after { animation: none; }
+
+  .js [data-reveal] {
+    transform: none;
+    transition: opacity 300ms ease;
+  }
+  .js [data-reveal] em::after { transform: none; transition: none; }
+  .js [data-reveal='print'] {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+  .js [data-reveal='print'].is-visible { opacity: 1; }
+  .js [data-reveal] .stamp {
+    transform: none;
+    transition: opacity 200ms ease;
+    transition-delay: calc(200ms + var(--i, 0) * 60ms);
+  }
+  .press:active,
+  .lift:hover,
+  .card-hover:hover { transform: none; }
+  .nudge-arrow,
+  .faq-icon { transition: none; }
+}

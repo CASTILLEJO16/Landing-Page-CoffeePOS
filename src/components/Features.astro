@@ -1,0 +1,125 @@
+---
+import { Picture } from 'astro:assets';
+import Screenshot from './Screenshot.astro';
+import LoyaltyCardMock from './LoyaltyCardMock.astro';
+// Capturas: reemplaza los archivos en src/assets/screenshots/ (mismo nombre = no tocas código).
+import cajaImg from '../assets/screenshots/caja.png';
+import personalizacionesImg from '../assets/screenshots/personalizaciones.png';
+import usuariosImg from '../assets/screenshots/usuarios.png';
+import adminImg from '../assets/screenshots/admin.png';
+import movilImg from '../assets/screenshots/movil.png';
+
+// Filas alternadas. `visual` decide qué se muestra del otro lado.
+const features = [
+  {
+    kicker: 'Caja',
+    title: 'Caja y cobro rápido',
+    text: 'Tu menú en botones grandes, ordenado por categoría. Tocas, agregas y cobras en efectivo, tarjeta o transferencia. Menos tiempo en caja, fila que avanza.',
+    visual: 'shot',
+    img: { src: cajaImg, alt: 'Pantalla de cobro de Coffee POS con el menú y la orden actual' },
+  },
+  {
+    kicker: 'Personalizaciones',
+    title: 'Cada bebida, como la pide tu cliente',
+    text: 'Leche de avena, almendra o deslactosada; tamaño chico, mediano o grande; jarabes y extras. El precio se ajusta solo, sin hacer cuentas.',
+    visual: 'shot',
+    img: { src: personalizacionesImg, alt: 'Ventana para personalizar un latte con tipo de leche, jarabe, tamaño y toppings' },
+  },
+  {
+    kicker: 'Lealtad',
+    title: 'Tus clientes regresan por su sello',
+    text: 'Tu cliente escanea el QR de tu cafetería, se registra con su nombre y teléfono y recibe su tarjeta digital en el celular. Sin descargar apps ni tarjetas de papel. Al cobrar escaneas su código, el sello se suma solo y, al completar la tarjeta, la recompensa se aplica directo en la orden.',
+    visual: 'loyalty',
+  },
+  {
+    kicker: 'Reportes',
+    title: 'Tus números, claros y a la mano',
+    text: 'Descubre a qué hora vendes más, cómo te pagan tus clientes y cuál es tu bebida estrella. Así decides con datos, no con corazonadas.',
+    visual: 'shot',
+    img: { src: adminImg, alt: 'Gráficas de Coffee POS: ventas por hora, ventas por día, método de pago y productos más vendidos' },
+  },
+  {
+    kicker: 'Usuarios',
+    title: 'Administrador y vendedor',
+    text: 'Tú, como administrador, controlas el menú, los precios y los reportes. Tus vendedores entran con su propio usuario o PIN y solo ven lo que necesitan para cobrar.',
+    visual: 'shot',
+    img: { src: usuariosImg, alt: 'Lista de usuarios de Coffee POS con roles de administrador y vendedor' },
+  },
+  {
+    kicker: 'Cualquier dispositivo',
+    title: 'Funciona en lo que ya tienes, sin instalar nada',
+    text: 'Tablet, computadora o celular: solo abres el navegador y entras. Sin descargar programas ni comprar equipo especial. Si se descompone un equipo, entras desde otro y sigues vendiendo.',
+    visual: 'phone',
+  },
+] as const;
+
+// Funciones que vienen en camino.
+const soon = [
+  {
+    title: 'Integración con terminal bancaria',
+    text: 'El cobro con tarjeta pasa directo de la caja a la terminal, sin teclear el monto dos veces.',
+    icon: 'M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 3h8v4H8V6Zm1 8h.01M12 14h.01M15 14h.01M9 17h.01M12 17h.01M15 17h.01',
+  },
+];
+---
+
+<section id="funciones" class="scroll-mt-16 py-20 lg:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <h2 class="max-w-3xl text-4xl leading-[1.08] text-balance sm:text-5xl" data-reveal>
+      Todo lo que necesitas para atender, nada que te <em>estorbe</em>
+    </h2>
+
+    <div class="mt-14 space-y-20 lg:mt-20 lg:space-y-28">
+      {features.map((f, i) => (
+        <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <div class={i % 2 === 1 ? 'lg:order-2' : ''} data-reveal>
+            <p class="kicker flex items-center gap-3 text-acento-700">
+              <span class="text-cafe-500">{String(i + 1).padStart(2, '0')}</span>
+              <span class="h-px w-8 bg-current opacity-40" aria-hidden="true"></span>
+              {f.kicker}
+            </p>
+            <h3 class="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-balance sm:text-[2.1rem] sm:leading-[1.15]">{f.title}</h3>
+            <p class="mt-4 max-w-xl text-lg leading-relaxed text-cafe-700">{f.text}</p>
+          </div>
+
+          <div data-reveal style="--delay: 100ms">
+            {f.visual === 'shot' && <Screenshot src={f.img.src} alt={f.img.alt} />}
+            {f.visual === 'loyalty' && <LoyaltyCardMock />}
+            {f.visual === 'phone' && (
+              <div class="flex justify-center">
+                <div class="w-56 rounded-[2.2rem] bg-cafe-900 p-2.5 shadow-lift sm:w-64">
+                  <Picture
+                    src={movilImg}
+                    alt="Coffee POS en un celular: menú con fotos de los productos y barra para ver la orden"
+                    formats={['avif', 'webp']}
+                    widths={[256, 512, 834]}
+                    sizes="(min-width: 640px) 256px, 224px"
+                    loading="lazy"
+                    decoding="async"
+                    class="block h-auto w-full rounded-[1.7rem]"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Próximamente: franja compacta, para que no compita con lo que ya funciona -->
+    <div class="mt-24 space-y-4" data-reveal>
+      {soon.map((s) => (
+        <article class="card-hover flex flex-col gap-4 rounded-2xl bg-crema-50 p-6 shadow-soft ring-1 ring-cafe-900/5 sm:flex-row sm:items-center sm:gap-5">
+          <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-crema-200 text-cafe-700" aria-hidden="true">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={s.icon} /></svg>
+          </span>
+          <div class="flex-1">
+            <h3 class="text-lg font-bold">{s.title}</h3>
+            <p class="mt-1 leading-relaxed text-cafe-700">{s.text}</p>
+          </div>
+          <span class="kicker self-start rounded-full bg-acento-500/15 px-3 py-1 text-acento-700 sm:self-center">Próximamente</span>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
