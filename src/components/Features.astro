@@ -3,123 +3,188 @@ import { Picture } from 'astro:assets';
 import Screenshot from './Screenshot.astro';
 import LoyaltyCardMock from './LoyaltyCardMock.astro';
 // Capturas: reemplaza los archivos en src/assets/screenshots/ (mismo nombre = no tocas código).
-import cajaImg from '../assets/screenshots/caja.png';
 import personalizacionesImg from '../assets/screenshots/personalizaciones.png';
-import usuariosImg from '../assets/screenshots/usuarios.png';
 import adminImg from '../assets/screenshots/admin.png';
+import usuariosImg from '../assets/screenshots/usuarios.png';
 import movilImg from '../assets/screenshots/movil.png';
 
-// Filas alternadas. `visual` decide qué se muestra del otro lado.
+// Cada función parte del problema que resuelve. Los ejemplos salen de las capturas reales.
 const features = [
   {
-    kicker: 'Caja',
-    title: 'Caja y cobro rápido',
-    text: 'Tu menú en botones grandes, ordenado por categoría. Tocas, agregas y cobras en efectivo, tarjeta o transferencia. Menos tiempo en caja, fila que avanza.',
+    id: 'personalizaciones',
+    problem: 'Cada bebida tiene su propio precio',
+    title: 'Personalizaciones sin hacer cuentas',
+    text: 'Eliges leche, jarabe, tamaño y toppings, y el sistema suma los extras. En la captura: un latte de $62 con avena, vainilla, tamaño grande y canela queda en $99.',
     visual: 'shot',
-    img: { src: cajaImg, alt: 'Pantalla de cobro de Coffee POS con el menú y la orden actual' },
+    img: { src: personalizacionesImg, alt: 'Ventana para personalizar un latte: leche de avena, jarabe de vainilla, tamaño grande y canela. Base $62, extras $37, total $99' },
   },
   {
-    kicker: 'Personalizaciones',
-    title: 'Cada bebida, como la pide tu cliente',
-    text: 'Leche de avena, almendra o deslactosada; tamaño chico, mediano o grande; jarabes y extras. El precio se ajusta solo, sin hacer cuentas.',
-    visual: 'shot',
-    img: { src: personalizacionesImg, alt: 'Ventana para personalizar un latte con tipo de leche, jarabe, tamaño y toppings' },
-  },
-  {
-    kicker: 'Lealtad',
-    title: 'Tus clientes regresan por su sello',
-    text: 'Tu cliente escanea el QR de tu cafetería, se registra con su nombre y teléfono y recibe su tarjeta digital en el celular. Sin descargar apps ni tarjetas de papel. Al cobrar escaneas su código, el sello se suma solo y, al completar la tarjeta, la recompensa se aplica directo en la orden.',
+    id: 'lealtad',
+    problem: 'Clientes que compran una vez y no vuelven',
+    title: 'Tarjeta de lealtad en su celular',
+    text: 'Tu cliente escanea el QR de tu cafetería, se registra con nombre y teléfono y guarda su tarjeta con QR en el celular, sin descargar apps. Al cobrar escaneas su código y el sello se suma solo; con 10 sellos, la recompensa se aplica en la orden. Puede revisar su avance cuando quiera con su número de teléfono.',
     visual: 'loyalty',
   },
   {
-    kicker: 'Reportes',
-    title: 'Tus números, claros y a la mano',
-    text: 'Descubre a qué hora vendes más, cómo te pagan tus clientes y cuál es tu bebida estrella. Así decides con datos, no con corazonadas.',
+    id: 'reportes',
+    problem: 'Comprar insumos al tanteo',
+    title: 'Ventas por hora, día y producto',
+    text: 'Ves a qué hora vendes más, cómo te pagan y qué se vende más. En el ejemplo, el pico es a las 7:00 y el latte es el producto estrella.',
     visual: 'shot',
-    img: { src: adminImg, alt: 'Gráficas de Coffee POS: ventas por hora, ventas por día, método de pago y productos más vendidos' },
+    img: { src: adminImg, alt: 'Reportes de Coffee POS: ventas por hora con pico a las 7:00, tendencia por día, ventas por método de pago y productos más vendidos con el latte primero' },
   },
   {
-    kicker: 'Usuarios',
+    id: 'usuarios',
+    problem: 'Que cualquiera pueda cambiar precios',
     title: 'Administrador y vendedor',
-    text: 'Tú, como administrador, controlas el menú, los precios y los reportes. Tus vendedores entran con su propio usuario o PIN y solo ven lo que necesitan para cobrar.',
+    text: 'Tú controlas el menú, los precios y los reportes. Tus vendedores entran con su usuario o PIN y solo ven lo que necesitan para cobrar.',
     visual: 'shot',
-    img: { src: usuariosImg, alt: 'Lista de usuarios de Coffee POS con roles de administrador y vendedor' },
+    img: { src: usuariosImg, alt: 'Gestión de usuarios: tres usuarios activos con roles de vendedor y administrador, y PIN asignado' },
   },
   {
-    kicker: 'Cualquier dispositivo',
-    title: 'Funciona en lo que ya tienes, sin instalar nada',
-    text: 'Tablet, computadora o celular: solo abres el navegador y entras. Sin descargar programas ni comprar equipo especial. Si se descompone un equipo, entras desde otro y sigues vendiendo.',
+    id: 'equipos',
+    problem: 'Depender de una sola computadora',
+    title: 'Funciona en el equipo que ya tienes',
+    text: 'Tablet, computadora o celular: abres el navegador y entras. Si un equipo falla, entras desde otro y sigues vendiendo.',
     visual: 'phone',
   },
 ] as const;
 
-// Funciones que vienen en camino.
-const soon = [
-  {
-    title: 'Integración con terminal bancaria',
-    text: 'El cobro con tarjeta pasa directo de la caja a la terminal, sin teclear el monto dos veces.',
-    icon: 'M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 3h8v4H8V6Zm1 8h.01M12 14h.01M15 14h.01M9 17h.01M12 17h.01M15 17h.01',
-  },
-];
+const soon = {
+  title: 'Integración con terminal bancaria',
+  text: 'El cobro con tarjeta pasará directo de la caja a la terminal, sin teclear el monto dos veces.',
+};
 ---
 
-<section id="funciones" class="scroll-mt-16 py-20 lg:py-28">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6">
-    <h2 class="max-w-3xl text-4xl leading-[1.08] text-balance sm:text-5xl" data-reveal>
-      Todo lo que necesitas para atender, nada que te <em>estorbe</em>
-    </h2>
+<section id="funciones" class="scroll-mt-16 border-t border-borde py-20 lg:py-32">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6">
+    <div class="grid gap-6 lg:grid-cols-12">
+      <h2 class="text-4xl leading-[1.08] sm:text-5xl lg:col-span-7" data-reveal>Pensado para cómo se trabaja en una barra de café.</h2>
+      <p class="max-w-md text-texto-2 lg:col-span-4 lg:col-start-9 lg:self-end" data-reveal style="--d: 1">
+        Cada función resuelve algo que nos cuentan los dueños de cafeterías: filas lentas, clientes que no vuelven y números que nadie revisa.
+      </p>
+    </div>
 
-    <div class="mt-14 space-y-20 lg:mt-20 lg:space-y-28">
-      {features.map((f, i) => (
-        <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <div class={i % 2 === 1 ? 'lg:order-2' : ''} data-reveal>
-            <p class="kicker flex items-center gap-3 text-acento-700">
-              <span class="text-cafe-500">{String(i + 1).padStart(2, '0')}</span>
-              <span class="h-px w-8 bg-current opacity-40" aria-hidden="true"></span>
-              {f.kicker}
-            </p>
-            <h3 class="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-balance sm:text-[2.1rem] sm:leading-[1.15]">{f.title}</h3>
-            <p class="mt-4 max-w-xl text-lg leading-relaxed text-cafe-700">{f.text}</p>
-          </div>
+    <!-- ESCRITORIO: lista de funciones (tabs) + una sola captura que cambia -->
+    <div class="mt-16 hidden gap-12 lg:grid lg:grid-cols-12" data-tabs>
+      <div class="col-span-5" role="tablist" aria-label="Funciones de Coffee POS" aria-orientation="vertical">
+        {features.map((f, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${f.id}`}
+            aria-controls={`panel-${f.id}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            class="group relative block w-full cursor-pointer border-t border-borde py-6 pr-4 pl-6 text-left last:border-b focus-visible:outline-offset-[-2px]"
+          >
+            <span class="tab-bar absolute top-0 bottom-0 left-0 w-0.5 bg-cafe" aria-hidden="true"></span>
+            <span class="block font-mono text-xs text-texto-3">{f.problem}</span>
+            <span class="mt-1.5 block font-display text-xl font-semibold tracking-[-0.025em] text-texto-2 transition-colors duration-[180ms] ease-[var(--ease-out)] group-hover:text-texto group-aria-selected:text-texto">{f.title}</span>
+            <span class="mt-2 block text-[0.95rem] text-texto-2">{f.text}</span>
+          </button>
+        ))}
+      </div>
 
-          <div data-reveal style="--delay: 100ms">
-            {f.visual === 'shot' && <Screenshot src={f.img.src} alt={f.img.alt} />}
-            {f.visual === 'loyalty' && <LoyaltyCardMock />}
-            {f.visual === 'phone' && (
-              <div class="flex justify-center">
-                <div class="w-56 rounded-[2.2rem] bg-[#2a211b] p-2.5 shadow-lift ring-1 ring-cafe-900/15 sm:w-64">
+      <div class="col-span-7">
+        <div class="stage sticky top-24 grid rounded-[14px] p-4 xl:p-6" data-reveal="shot">
+          {features.map((f, i) => (
+            <div
+              role="tabpanel"
+              id={`panel-${f.id}`}
+              aria-labelledby={`tab-${f.id}`}
+              class="panel [grid-area:1/1] self-start"
+              data-active={i === 0 ? '' : undefined}
+            >
+              {f.visual === 'shot' && <Screenshot src={f.img.src} alt={f.img.alt} sizes="(min-width: 1200px) 640px, 54vw" />}
+              {f.visual === 'loyalty' && <LoyaltyCardMock />}
+              {f.visual === 'phone' && (
+                <div class="shot flex justify-center bg-banda! px-6 py-10">
                   <Picture
                     src={movilImg}
-                    alt="Coffee POS en un celular: menú con fotos de los productos y barra para ver la orden"
+                    alt="Coffee POS en un celular: menú con fotos de los productos y barra inferior para ver la orden"
                     formats={['avif', 'webp']}
                     widths={[256, 512, 834]}
-                    sizes="(min-width: 640px) 256px, 224px"
+                    sizes="240px"
                     loading="lazy"
                     decoding="async"
-                    class="block h-auto w-full rounded-[1.7rem]"
+                    class="block h-auto w-60 rounded-[22px] border border-borde"
                   />
                 </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- MÓVIL: lista simple, cada función con su captura debajo -->
+    <ol class="mt-12 space-y-16 lg:hidden">
+      {features.map((f) => (
+        <li class="border-t border-borde pt-6">
+          <p class="font-mono text-xs text-texto-3">{f.problem}</p>
+          <h3 class="mt-1.5 text-2xl">{f.title}</h3>
+          <p class="mt-3 text-texto-2">{f.text}</p>
+          <div class="stage mt-6 rounded-[12px] p-2" data-reveal="shot">
+            {f.visual === 'shot' && <Screenshot src={f.img.src} alt={f.img.alt} sizes="calc(100vw - 2rem)" />}
+            {f.visual === 'loyalty' && <LoyaltyCardMock />}
+            {f.visual === 'phone' && (
+              <div class="shot flex justify-center bg-banda! px-6 py-8">
+                <Picture
+                  src={movilImg}
+                  alt="Coffee POS en un celular: menú con fotos de los productos y barra inferior para ver la orden"
+                  formats={['avif', 'webp']}
+                  widths={[256, 512, 834]}
+                  sizes="208px"
+                  loading="lazy"
+                  decoding="async"
+                  class="block h-auto w-52 rounded-[20px] border border-borde"
+                />
               </div>
             )}
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ol>
 
-    <!-- Próximamente: franja compacta, para que no compita con lo que ya funciona -->
-    <div class="mt-24 space-y-4" data-reveal>
-      {soon.map((s) => (
-        <article class="card-hover flex flex-col gap-4 rounded-2xl bg-crema-50 p-6 shadow-soft ring-1 ring-cafe-900/5 sm:flex-row sm:items-center sm:gap-5">
-          <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-crema-200 text-cafe-700" aria-hidden="true">
-            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={s.icon} /></svg>
-          </span>
-          <div class="flex-1">
-            <h3 class="text-lg font-bold">{s.title}</h3>
-            <p class="mt-1 leading-relaxed text-cafe-700">{s.text}</p>
-          </div>
-          <span class="kicker self-start rounded-full bg-acento-500/15 px-3 py-1 text-acento-700 sm:self-center">Próximamente</span>
-        </article>
-      ))}
+    <!-- En camino: una línea, para que no compita con lo que ya funciona -->
+    <div class="mt-20 flex flex-col gap-2 border-t border-borde pt-6 sm:flex-row sm:items-baseline sm:gap-6">
+      <p class="shrink-0 font-mono text-xs text-texto-3 uppercase tracking-[0.08em]">Próximamente</p>
+      <p class="text-texto-2"><span class="font-medium text-texto">{soon.title}.</span> {soon.text}</p>
     </div>
   </div>
 </section>
+
+<script>
+  // Tabs accesibles: clic o flechas ↑/↓ (también Inicio/Fin) cambian la función activa.
+  const root = document.querySelector<HTMLElement>('[data-tabs]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+
+    const select = (next: HTMLButtonElement, focus = false) => {
+      for (const t of tabs) {
+        const on = t === next;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')!)!.toggleAttribute('data-active', on);
+      }
+      if (focus) next.focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (e) => {
+        const map: Record<string, number> = {
+          ArrowDown: (i + 1) % tabs.length,
+          ArrowUp: (i - 1 + tabs.length) % tabs.length,
+          Home: 0,
+          End: tabs.length - 1,
+        };
+        if (e.key in map) {
+          e.preventDefault();
+          select(tabs[map[e.key]], true);
+        }
+      });
+    });
+  }
+</script>

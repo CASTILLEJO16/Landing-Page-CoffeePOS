@@ -14,7 +14,7 @@ const ogImage = new URL(site.ogImage, Astro.site ?? site.url).href;
     <title>{site.title}</title>
     <meta name="description" content={site.description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#14100d" />
+    <meta name="theme-color" content="#f8fafc" />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -36,14 +36,17 @@ const ogImage = new URL(site.ogImage, Astro.site ?? site.url).href;
     <meta name="twitter:description" content={site.description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Marca que hay JS antes de pintar, para que las animaciones de scroll no parpadeen. -->
+    <!-- Marca que hay JS antes de pintar, para que las apariciones no parpadeen. -->
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body>
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-texto focus:px-4 focus:py-2 focus:text-white">
+      Saltar al contenido
+    </a>
     <slot />
 
     <script>
-      // Aparición al hacer scroll: cada bloque con [data-reveal] entra una sola vez.
+      // Aparición al entrar en pantalla (una vez por elemento). Solo para [data-reveal].
       const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
       if (!('IntersectionObserver' in window)) {
         els.forEach((el) => el.classList.add('is-visible'));
@@ -56,10 +59,11 @@ const ogImage = new URL(site.ogImage, Astro.site ?? site.url).href;
               io.unobserve(e.target);
             }
           },
-          { rootMargin: '0px 0px -10% 0px' },
+          { rootMargin: '0px 0px -8% 0px' },
         );
         els.forEach((el) => io.observe(el));
       }
     </script>
+
   </body>
 </html>

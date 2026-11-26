@@ -1,24 +1,21 @@
 ---
+import { site } from '../config/site';
 import WhatsAppButton from './WhatsAppButton.astro';
 ---
 
-<section class="px-4 pb-20 sm:px-6 lg:pb-28">
-  <div class="relative isolate mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-acento-500 px-6 py-16 text-center text-tinta shadow-[0_40px_120px_-40px_rgb(242_106_33/0.6)] sm:px-12 sm:py-24" data-reveal>
-    <!-- Anillos de taza y resplandor (decorativos, estáticos) -->
-    <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_80%_at_50%_0%,rgb(255_194_154/0.45),transparent_70%)]" aria-hidden="true"></div>
-    <svg class="pointer-events-none absolute -top-20 -right-16 -z-10 size-80 text-tinta/10" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-      <path d="M100 12c49 0 88 38 87 87-1 50-40 89-89 88-48-1-86-40-86-89 1-47 40-86 88-86Z" stroke="currentColor" stroke-width="7" stroke-dasharray="180 14 60 9" />
-    </svg>
-    <svg class="pointer-events-none absolute -bottom-24 -left-20 -z-10 size-72 text-tinta/10" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-      <path d="M100 26c41 0 74 33 73 74 0 41-33 73-74 72-40 0-72-33-72-74 1-40 33-72 73-72Z" stroke="currentColor" stroke-width="5" stroke-dasharray="120 10 40 6" />
-    </svg>
-
-    <h2 class="on-accent mx-auto max-w-3xl text-4xl leading-[1.08] text-balance sm:text-[3.25rem]">
-      Velo funcionando en tu <em>propia</em> cafetería
+<section class="border-t border-borde bg-banda py-20 lg:py-28">
+  <div class="mx-auto grid max-w-[1200px] gap-8 px-4 sm:px-6 lg:grid-cols-12 lg:items-end">
+    <h2 class="text-4xl leading-[1.08] sm:text-5xl lg:col-span-7" data-reveal>
+      Te lo enseño funcionando, en tu cafetería.
     </h2>
-    <p class="mx-auto mt-5 max-w-xl text-lg text-tinta/75">
-      Te lo enseño en persona, sin compromiso. Tienes 10 días de prueba gratis y no pagas nada para empezar.
-    </p>
-    <WhatsAppButton variant="dark" class="mt-10 w-full sm:w-auto" />
+    <div class="lg:col-span-4 lg:col-start-9" data-reveal style="--d: 1">
+      <p class="text-texto-2">Sin compromiso. 10 días de prueba gratis y nada que pagar para empezar.</p>
+      <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <WhatsAppButton />
+        <a href={site.whatsappUrl} target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-texto-2 transition-colors duration-[180ms] ease-[var(--ease-out)] hover:text-texto">
+          {site.whatsappDisplay}
+        </a>
+      </div>
+    </div>
   </div>
 </section>

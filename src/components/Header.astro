@@ -2,28 +2,32 @@
 import { site } from '../config/site';
 import Logo from './Logo.astro';
 
-const focus = 'rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cafe-900';
-const navLink = `transition-colors duration-200 hover:text-cafe-900 ${focus}`;
+const link = 'text-sm text-texto-2 transition-colors duration-[180ms] ease-[var(--ease-out)] hover:text-texto';
 ---
 
-<header class="sticky top-0 z-30 border-b border-cafe-900/8 bg-crema-100/70 backdrop-blur-xl">
-  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-    <a href="#inicio" class={`flex items-center gap-2 text-cafe-900 ${focus}`} aria-label="Coffee POS, inicio">
-      <Logo class="size-8" />
-      <span class="font-display text-xl font-semibold tracking-tight">{site.name}</span>
+<header id="site-header" class="sticky top-0 z-30 bg-fondo">
+  <div class="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-6 px-4 sm:px-6">
+    <a href="#inicio" class="flex items-center gap-2.5" aria-label="Coffee POS, inicio">
+      <Logo class="size-7" />
+      <span class="font-display text-[1.05rem] font-semibold tracking-[-0.02em]">{site.name}</span>
     </a>
-    <nav class="hidden items-center gap-7 text-sm font-semibold text-cafe-700 md:flex" aria-label="Secciones">
-      <a href="#funciones" class={navLink}>Funciones</a>
-      <a href="#precio" class={navLink}>Precio</a>
-      <a href="#preguntas" class={navLink}>Preguntas</a>
+    <nav class="hidden items-center gap-8 md:flex" aria-label="Secciones">
+      <a href="#funciones" class={link}>Funciones</a>
+      <a href="#pagos" class={link}>Pagos</a>
+      <a href="#precio" class={link}>Precio</a>
+      <a href="#preguntas" class={link}>Preguntas</a>
     </nav>
-    <a
-      href={site.whatsappUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="press lift inline-flex min-h-10 items-center rounded-full bg-cafe-900 px-4 text-sm font-bold text-tinta hover:bg-cafe-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cafe-900"
-    >
+    <a href={site.whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary h-9 px-4 text-sm">
       Pedir demo
     </a>
   </div>
+  <!-- Línea de 1px: solo aparece al bajar, para separar el encabezado del contenido. -->
+  <div class="header-line h-px bg-borde" aria-hidden="true"></div>
 </header>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const sentinel = () => header.toggleAttribute('data-scrolled', window.scrollY > 8);
+  sentinel();
+  window.addEventListener('scroll', sentinel, { passive: true });
+</script>

@@ -1,5 +1,5 @@
 ---
-// Captura dentro de un marco de navegador.
+// Captura real del sistema, sin marco decorativo: borde de 1px y radio de 10px.
 // Para reemplazarla, sustituye el archivo en src/assets/screenshots/ (mismo nombre = no tocas código).
 // Astro la convierte a AVIF/WebP en varios tamaños al compilar.
 import { Picture } from 'astro:assets';
@@ -16,17 +16,12 @@ const {
   src,
   alt,
   eager = false,
-  sizes = '(min-width: 1152px) 560px, (min-width: 1024px) 48vw, calc(100vw - 2rem)',
+  sizes = '(min-width: 1200px) 680px, (min-width: 1024px) 56vw, calc(100vw - 2rem)',
   class: className = '',
 } = Astro.props;
 ---
 
-<figure class={`overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-cafe-900/8 ${className}`}>
-  <div class="flex items-center gap-1.5 border-b border-cafe-900/5 bg-crema-100 px-3.5 py-2.5" aria-hidden="true">
-    <span class="size-2.5 rounded-full bg-crema-300"></span>
-    <span class="size-2.5 rounded-full bg-crema-300"></span>
-    <span class="size-2.5 rounded-full bg-crema-300"></span>
-  </div>
+<figure class={`shot ${className}`}>
   <Picture
     src={src}
     alt={alt}

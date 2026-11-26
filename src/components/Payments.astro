@@ -1,0 +1,194 @@
+---
+// Métodos de pago REALES del POS (ventana "Seleccionar método de pago"):
+// Efectivo, Tarjeta (crédito/débito), USD y Pago mixto. Transferencia NO está en la caja, así que no se anuncia.
+// Cada panel es una captura real de la ventana de cobro (recortada, en src/assets/screenshots/pagos/).
+import { Picture } from 'astro:assets';
+import Screenshot from './Screenshot.astro';
+import metodosImg from '../assets/screenshots/pagos-metodos.png';
+import efectivoImg from '../assets/screenshots/pagos/efectivo.png';
+import tarjetaImg from '../assets/screenshots/pagos/tarjeta.png';
+import dolaresImg from '../assets/screenshots/pagos/dolares.png';
+import mixtoImg from '../assets/screenshots/pagos/mixto.png';
+
+const methods = [
+  {
+    id: 'efectivo',
+    name: 'Efectivo',
+    short: 'Billetes, monedas y cambio',
+    text: 'Botones de billetes y monedas, o "Exacto". El cambio sale solo: en la captura, una venta de $70 pagada con $200 da $130 de cambio.',
+    img: efectivoImg,
+    alt: 'Ventana Pago en efectivo: total $70.00, monto recibido $200.00, cambio $130.00, con botones de billetes de $20 a $1000 y monedas de $1 a $20',
+  },
+  {
+    id: 'tarjeta',
+    name: 'Tarjeta',
+    short: 'Crédito o débito',
+    text: 'Eliges si es de crédito o de débito. Cada una queda registrada por separado en tus reportes y en el historial de ventas.',
+    img: tarjetaImg,
+    alt: 'Ventana Seleccionar tipo de tarjeta con las opciones Tarjeta de crédito y Tarjeta de débito',
+  },
+  {
+    id: 'dolares',
+    name: 'Dólares',
+    short: 'Con tu tipo de cambio',
+    text: 'Usa el tipo de cambio que tú configuras (en la captura, 1 USD = $17.00). Muestra el total en dólares y da el cambio en dólares con su equivalente en pesos.',
+    img: dolaresImg,
+    alt: 'Ventana Pago en dólares: tipo de cambio 1 USD = $17.00 MXN, total $70.00 MXN equivale a $4.12 USD, recibidos 10 USD, cambio $5.88 USD',
+  },
+  {
+    id: 'mixto',
+    name: 'Pago mixto',
+    short: 'Pesos, dólares y tarjeta',
+    text: 'Combina efectivo en pesos, efectivo en dólares y tarjeta en la misma venta. El sistema lleva la cuenta de lo pagado hasta cubrir el total.',
+    img: mixtoImg,
+    alt: 'Ventana Pago mixto: total a pagar $70.00, total pagado $70.00, cambio $0.00, con opciones Efectivo MXN, Efectivo USD y Tarjeta',
+  },
+];
+---
+
+<section id="pagos" class="scroll-mt-16 border-t border-borde py-20 lg:py-32">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-10">
+      <!-- Lista de métodos -->
+      <div class="lg:col-span-4">
+        <h2 class="text-4xl leading-[1.08] sm:text-5xl" data-reveal>Cobra como te paguen.</h2>
+        <p class="mt-5 max-w-md text-lg text-texto-2" data-reveal style="--d: 1">
+          Al presionar Cobrar eliges el método. Cada venta queda registrada con el suyo y tus reportes los separan solos.
+        </p>
+
+        <div class="mt-10 border-t border-borde" role="tablist" aria-label="Métodos de pago" aria-orientation="vertical" data-pay-tabs>
+          {methods.map((m, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`pay-tab-${m.id}`}
+              aria-controls={`pay-panel-${m.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+              class="group relative flex w-full cursor-pointer items-baseline justify-between gap-4 overflow-hidden border-b border-borde py-4 text-left focus-visible:outline-offset-[-2px]"
+            >
+              <span class="font-display text-lg font-semibold tracking-[-0.02em] text-texto-2 transition-colors duration-[180ms] ease-[var(--ease-out)] group-hover:text-texto group-aria-selected:text-texto">{m.name}</span>
+              <span class="text-sm text-texto-3">{m.short}</span>
+              <!-- Barra de progreso del recorrido automático -->
+              <span class="pay-progress absolute right-0 bottom-[-1px] left-0 h-0.5 bg-cafe" aria-hidden="true"></span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Ventana de cobro real -->
+      <div class="lg:col-span-8 lg:pl-6" data-reveal="shot">
+        <div class="stage rounded-[14px] p-3 sm:p-6">
+          <div class="grid">
+            {methods.map((m, i) => (
+              <div
+                role="tabpanel"
+                id={`pay-panel-${m.id}`}
+                aria-labelledby={`pay-tab-${m.id}`}
+                class="panel [grid-area:1/1] self-center"
+                data-active={i === 0 ? '' : undefined}
+              >
+                <figure class="shot mx-auto w-fit max-w-full">
+                  <Picture
+                    src={m.img}
+                    alt={m.alt}
+                    formats={['avif', 'webp']}
+                    widths={[480, 760, m.img.width]}
+                    sizes="(min-width: 1200px) 720px, (min-width: 1024px) 60vw, calc(100vw - 3rem)"
+                    loading="lazy"
+                    decoding="async"
+                    class="block h-auto max-h-[30rem] w-auto max-w-full"
+                  />
+                </figure>
+              </div>
+            ))}
+          </div>
+        </div>
+        <!-- Descripción del método activo (cambia junto con la captura) -->
+        <div class="mt-4 grid">
+          {methods.map((m, i) => (
+            <p class="panel [grid-area:1/1] text-texto-2" data-pay-text={m.id} data-active={i === 0 ? '' : undefined}>{m.text}</p>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Prueba real: así aparecen los métodos en los KPIs del sistema -->
+    <div class="mt-16 grid gap-8 border-t border-borde pt-10 lg:grid-cols-12 lg:items-center lg:gap-10">
+      <div class="lg:col-span-5" data-reveal>
+        <h3 class="text-2xl">Y así quedan en tus reportes.</h3>
+        <p class="mt-3 max-w-md text-texto-2">
+          Los KPIs separan cada método, incluso tarjeta de crédito y de débito, para que sepas cuánto entra en efectivo,
+          en el banco y en dólares.
+        </p>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7" data-reveal="shot">
+        <div class="stage rounded-[14px] p-3 sm:p-4">
+          <Screenshot
+            src={metodosImg}
+            alt="Gráfica de ventas por método de pago en los KPIs: efectivo 32%, tarjeta de crédito 28%, tarjeta de débito 27%, dólares 10% y pago mixto 3%"
+            sizes="(min-width: 1200px) 520px, (min-width: 1024px) 44vw, calc(100vw - 3rem)"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Métodos de pago: recorren solos cada 3.5s (barra de progreso) hasta que el usuario elige uno.
+  const root = document.querySelector<HTMLElement>('[data-pay-tabs]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let auto = !reduce;
+    let timer: number | undefined;
+    const STEP = 3500;
+
+    const select = (i: number, focus = false) => {
+      index = i;
+      tabs.forEach((t, j) => {
+        const on = j === i;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        t.toggleAttribute('data-running', on && auto);
+        const id = t.getAttribute('aria-controls')!;
+        document.getElementById(id)!.toggleAttribute('data-active', on);
+        document.querySelector(`[data-pay-text="${id.replace('pay-panel-', '')}"]`)?.toggleAttribute('data-active', on);
+      });
+      if (focus) tabs[i].focus();
+    };
+
+    const stop = () => {
+      auto = false;
+      clearInterval(timer);
+      tabs.forEach((t) => t.removeAttribute('data-running'));
+    };
+
+    // Solo corre mientras la sección está en pantalla.
+    const io = new IntersectionObserver(([e]) => {
+      clearInterval(timer);
+      if (e.isIntersecting && auto) {
+        select(index);
+        timer = window.setInterval(() => select((index + 1) % tabs.length), STEP);
+      } else {
+        tabs.forEach((t) => t.removeAttribute('data-running'));
+      }
+    }, { threshold: 0.4 });
+    io.observe(root);
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => { stop(); select(i); });
+      tab.addEventListener('keydown', (e) => {
+        const map: Record<string, number> = {
+          ArrowDown: (i + 1) % tabs.length,
+          ArrowUp: (i - 1 + tabs.length) % tabs.length,
+          Home: 0,
+          End: tabs.length - 1,
+        };
+        if (e.key in map) { e.preventDefault(); stop(); select(map[e.key], true); }
+      });
+    });
+  }
+</script>

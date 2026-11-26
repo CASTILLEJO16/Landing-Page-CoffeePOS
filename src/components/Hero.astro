@@ -5,100 +5,58 @@ import Screenshot from './Screenshot.astro';
 // Captura principal: reemplaza src/assets/screenshots/hero.png
 import heroImg from '../assets/screenshots/hero.png';
 
-const check = 'M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.58l7.3-7.3a1 1 0 0 1 1.4 0Z';
+// Datos concretos que se ven en la captura o vienen del plan (nada inventado).
+const facts = [
+  { label: 'Cobro', value: 'Efectivo, tarjeta, dólares o mixto' },
+  { label: 'Atajos', value: 'Enter cobra, Esc cancela' },
+  { label: 'Equipo', value: 'Tablet, computadora o celular' },
+  { label: 'Precio', value: `$${plan.price} ${plan.currency} al ${plan.period}` },
+];
 ---
 
-<section id="inicio" class="relative isolate overflow-hidden">
-  <!-- Fondo: cuadrícula de puntos + luz cálida (decorativo, estático) -->
-  <div class="dot-grid pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
-  <div class="pointer-events-none absolute top-[8%] right-[-10%] -z-10 size-[38rem] rounded-full bg-acento-500/20 blur-[130px]" aria-hidden="true"></div>
-
-  <div class="mx-auto max-w-6xl px-4 pt-12 pb-20 sm:px-6 md:pt-20 lg:grid lg:grid-cols-[1fr_1.12fr] lg:items-center lg:gap-14 lg:pt-24 lg:pb-32">
-    <div>
-      <p class="rise-in kicker mb-7 inline-flex items-center gap-2.5 rounded-full bg-crema-50 px-3.5 py-1.5 text-cafe-700 shadow-soft ring-1 ring-cafe-900/5">
-        <span class="relative flex size-2" aria-hidden="true">
-          <span class="absolute inset-0 animate-ping rounded-full bg-acento-500 opacity-60 motion-reduce:animate-none"></span>
-          <span class="relative size-2 rounded-full bg-acento-500"></span>
-        </span>
-        Hecho en Tijuana para cafeterías
-      </p>
-      <h1
-        class="rise-in text-[2.75rem] leading-[1] text-balance text-cafe-900 sm:text-6xl lg:text-[4.4rem]"
-        style="--delay: 60ms"
-      >
-        Cobra más rápido y haz que tus clientes <em>regresen</em>
+<section id="inicio" class="pt-16 pb-24 sm:pt-24 lg:pt-28 lg:pb-32">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6">
+    <div class="grid gap-8 lg:grid-cols-12">
+      <h1 class="enter text-[2.4rem] leading-[1.04] sm:text-6xl lg:col-span-9 lg:text-[4.5rem]" style="--i: 0">
+        El punto de venta hecho para cafeterías.
+        <span class="text-texto-3">Instalado en persona, en Tijuana.</span>
       </h1>
-      <p class="rise-in mt-7 max-w-xl text-lg leading-relaxed text-cafe-700" style="--delay: 140ms">
-        Coffee POS es la caja para tu cafetería: tomas pedidos con todo y personalizaciones en segundos,
-        sabes qué se vende más y lo usas desde la tablet, compu o celular que ya tienes.
+
+      <p class="enter max-w-xl text-lg text-texto-2 lg:col-span-6 lg:col-start-1" style="--i: 1">
+        Cobra un latte con leche de avena y jarabe de vainilla sin hacer cuentas, suma el sello de lealtad
+        de tu cliente al cobrar y revisa a qué hora vendes más. Todo desde el equipo que ya tienes.
       </p>
-      <div class="rise-in mt-9 flex flex-col gap-3 sm:flex-row sm:items-center" style="--delay: 200ms">
-        <WhatsAppButton class="w-full sm:w-auto" />
-        <a
-          href="#funciones"
-          class="group press inline-flex min-h-12 items-center justify-center gap-1.5 rounded-full px-5 font-semibold text-cafe-700 hover:text-cafe-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cafe-900"
-        >
-          Ver qué incluye <span class="nudge-arrow" aria-hidden="true">→</span>
-        </a>
+
+      <div class="enter flex flex-wrap items-center gap-x-5 gap-y-3 lg:col-span-6 lg:col-start-1" style="--i: 2">
+        <WhatsAppButton />
+        <p class="text-sm text-texto-2">
+          {plan.badges.join(' · ')}
+        </p>
       </div>
-      <ul class="rise-in mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-cafe-700" style="--delay: 260ms">
-        {[...plan.badges, 'Sin instalar nada'].map((b) => (
-          <li class="flex items-center gap-1.5">
-            <svg viewBox="0 0 20 20" class="size-4 text-acento-600" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d={check} clip-rule="evenodd" /></svg>
-            {b}
-          </li>
-        ))}
-      </ul>
     </div>
 
-    <div class="relative mt-16 lg:mt-0">
-      <div class="rise-in" style="--delay: 180ms">
-        <div class="hero-drift">
-        <Screenshot
-          src={heroImg}
-          alt="Pantalla de caja de Coffee POS con fotos de los productos y una orden de cold brew y galleta"
-          eager
-          sizes="(min-width: 1152px) 600px, (min-width: 1024px) 52vw, calc(100vw - 2rem)"
-          class="shadow-lift"
-        />
-        </div>
-      </div>
-
-      <!-- Mini ticket flotante (ilustración del pedido que aparece en la captura) -->
-      <div
-        class="pop-in absolute -right-2 -bottom-16 w-44 sm:-right-6 drop-shadow-[0_20px_30px_rgb(0_0_0/0.55)] sm:w-52"
-        style="--delay: 520ms"
-        aria-hidden="true"
-      >
-        <div class="float" style="--float-delay: 1.2s">
-        <div class="ticket-edge -rotate-2 bg-papel px-4 py-5 font-mono text-[11px] leading-relaxed text-tinta sm:text-xs">
-          <p class="text-center font-bold tracking-widest">COFFEE POS</p>
-          <hr class="ticket-rule my-2" />
-          <p class="flex justify-between"><span>1 Cold Brew</span><span>$70.00</span></p>
-          <p class="text-tinta/55">  Soya</p>
-          <p class="flex justify-between gap-2"><span>1 Galleta Chis Choco</span><span>$55.00</span></p>
-          <hr class="ticket-rule my-2" />
-          <p class="flex justify-between font-bold"><span>TOTAL</span><span>$125.00</span></p>
-        </div>
-        </div>
-      </div>
-
-      <!-- Etiqueta de sello (ilustración de la tarjeta de lealtad) -->
-      <div
-        class="pop-in absolute -top-6 -left-2 sm:-left-6"
-        style="--delay: 680ms"
-        aria-hidden="true"
-      >
-        <div class="float flex items-center gap-2.5 rounded-2xl bg-crema-50 py-2.5 pr-4 pl-2.5 text-cafe-900 shadow-lift ring-1 ring-cafe-900/10" style="--float-delay: 2s">
-        <span class="grid size-8 place-items-center rounded-full bg-acento-500 text-tinta shadow-glow">
-          <svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h11v4a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9Zm11 1.5h1.2a2.3 2.3 0 0 1 0 4.6H16" /></svg>
-        </span>
-        <span class="leading-tight">
-          <span class="block text-sm font-bold">+1 sello</span>
-          <span class="block font-mono text-[11px] text-cafe-700">Ana · 7 de 10</span>
-        </span>
+    <!-- Escenario oscuro: la captura clara resalta. Entra al cargar y se "acuesta" al hacer scroll. -->
+    <div class="enter-shot mt-16 lg:mt-20" style="--i: 4">
+      <div class="stage rounded-[16px] p-2 sm:p-5 lg:p-8">
+        <div class="tilt">
+          <Screenshot
+            src={heroImg}
+            alt="Pantalla de caja de Coffee POS: menú con fotos por categoría y una orden de Cold Brew con leche de soya y una galleta, total $125"
+            eager
+            sizes="(min-width: 1200px) 1088px, calc(100vw - 3rem)"
+          />
         </div>
       </div>
     </div>
+
+    <!-- Hechos concretos, alineados con la captura. Sin íconos: el texto basta. -->
+    <dl class="enter mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-borde pt-6 lg:grid-cols-4" style="--i: 5">
+      {facts.map((f) => (
+        <div>
+          <dt class="font-mono text-xs text-texto-3 uppercase tracking-[0.08em]">{f.label}</dt>
+          <dd class="mt-1.5 text-[0.95rem] text-texto">{f.value}</dd>
+        </div>
+      ))}
+    </dl>
   </div>
 </section>

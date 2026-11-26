@@ -1,24 +1,24 @@
 ---
-import { faqs } from '../config/site';
+import { faqs, site } from '../config/site';
 ---
 
-<section id="preguntas" class="faq scroll-mt-16 py-20 lg:py-28">
-  <div class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-    <h2 class="text-4xl leading-[1.08] text-balance sm:text-5xl lg:sticky lg:top-28 lg:self-start" data-reveal>
-      Preguntas <em>frecuentes</em>
-    </h2>
+<section id="preguntas" class="scroll-mt-16 border-t border-borde py-20 lg:py-32">
+  <div class="mx-auto grid max-w-[1200px] gap-12 px-4 sm:px-6 lg:grid-cols-12">
+    <div class="lg:col-span-5" data-reveal>
+      <h2 class="text-4xl leading-[1.08] sm:text-5xl">Preguntas frecuentes</h2>
+      <p class="mt-5 text-texto-2">
+        ¿Otra duda? <a href={site.whatsappUrl} target="_blank" rel="noopener noreferrer" class="text-link">Escríbeme por WhatsApp</a>.
+      </p>
+    </div>
 
-    <div class="border-t border-cafe-900/80" data-reveal style="--delay: 80ms">
-      {faqs.map((f, i) => (
-        <details class="group border-b border-cafe-900/15">
-          <summary class="flex min-h-16 cursor-pointer list-none items-center gap-5 rounded-lg py-5 text-lg font-bold transition-colors duration-200 hover:text-acento-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cafe-900">
-            <span class="font-mono text-sm font-semibold text-cafe-500" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <span class="flex-1">{f.q}</span>
-            <span class="grid size-9 shrink-0 place-items-center rounded-full bg-crema-200 text-cafe-700 transition-colors duration-200 group-open:bg-acento-500 group-open:text-tinta" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="faq-icon size-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg>
-            </span>
+    <div class="border-t border-borde lg:col-span-6 lg:col-start-7">
+      {faqs.map((f) => (
+        <details class="group border-b border-borde">
+          <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 font-medium transition-colors duration-[180ms] ease-[var(--ease-out)] hover:text-cafe">
+            {f.q}
+            <svg viewBox="0 0 16 16" class="faq-icon size-4 shrink-0 text-texto-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg>
           </summary>
-          <p class="pb-6 pl-10 leading-relaxed text-cafe-700 sm:pr-14">{f.a}</p>
+          <p class="answer pb-6 pr-10 text-texto-2">{f.a}</p>
         </details>
       ))}
     </div>

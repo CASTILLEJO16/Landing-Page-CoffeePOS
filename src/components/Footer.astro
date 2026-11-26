@@ -2,29 +2,20 @@
 import { site } from '../config/site';
 import Logo from './Logo.astro';
 
-const link = 'rounded transition-colors duration-200 hover:text-cafe-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cafe-900';
+const link = 'transition-colors duration-[180ms] ease-[var(--ease-out)] hover:text-texto';
 ---
 
-<footer class="border-t border-cafe-900/10 py-12">
-  <div class="mx-auto flex max-w-6xl flex-col gap-8 px-4 text-sm text-cafe-700 sm:px-6 md:flex-row md:items-end md:justify-between">
-    <div>
-      <div class="flex items-center gap-2 text-cafe-900">
-        <Logo class="size-7" />
-        <span class="font-display text-lg font-semibold">{site.name}</span>
-      </div>
-      <p class="kicker mt-3 text-cafe-500">Tijuana, B.C.</p>
+<footer class="border-t border-borde py-10">
+  <div class="mx-auto flex max-w-[1200px] flex-col gap-6 px-4 text-sm text-texto-2 sm:px-6 md:flex-row md:items-center md:justify-between">
+    <div class="flex items-center gap-2.5 text-texto">
+      <Logo class="size-6" />
+      <span class="font-display font-semibold tracking-[-0.02em]">{site.name}</span>
+      <span class="text-texto-3">· Tijuana, B.C.</span>
     </div>
-    <div class="flex flex-col gap-2 md:items-end">
-      <div class="flex flex-col gap-1 md:items-end">
-        <a href={site.whatsappUrl} target="_blank" rel="noopener noreferrer" class={link}>WhatsApp: {site.whatsappDisplay}</a>
-        <a href={`mailto:${site.email}`} class={link}>{site.email}</a>
-      </div>
-      <p>
-        Desarrollado por
-        <a href={site.authorUrl} target="_blank" rel="noopener" class="rounded font-semibold text-cafe-900 underline decoration-acento-500 underline-offset-4 hover:decoration-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cafe-900">
-          {site.author}
-        </a>
-      </p>
+    <div class="flex flex-col gap-2 md:flex-row md:gap-6">
+      <a href={site.whatsappUrl} target="_blank" rel="noopener noreferrer" class={link}>WhatsApp</a>
+      <a href={`mailto:${site.email}`} class={link}>{site.email}</a>
+      <a href={site.authorUrl} target="_blank" rel="noopener" class={link}>Hecho por {site.author}</a>
     </div>
   </div>
 </footer>

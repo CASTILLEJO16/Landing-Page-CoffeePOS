@@ -1,0 +1,166 @@
+---
+// "Más allá de la caja": lo que más llama la atención del sistema.
+// Cada punto está verificado en el código de CoffeePOS (modelos, páginas y servicios).
+//
+// GALERÍA: pon capturas en src/assets/screenshots/modulos/ con estos nombres
+// (png, jpg o webp) y aparecen solas debajo de la lista:
+//   promociones · almacen · etiquetas · cortes-caja · kpis · ventas · tickets-abiertos · mis-ventas · configuracion
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+const highlights = [
+  {
+    id: 'promociones',
+    module: 'Promociones',
+    title: 'Promociones y combos que se aplican solos',
+    text: '2x1, 3x2, descuento en porcentaje o en pesos y combos. Eliges qué días y en qué horario corren, y el descuento aparece en la orden sin que el vendedor haga nada.',
+    alt: 'Promociones y combos activos: "Martes de 2×1 Americano" (comprar 2, pagar 1) y "Combo Sandwich" de sandwich de pollo y americano por $140',
+    tall: true,
+  },
+  {
+    id: 'almacen',
+    module: 'Almacén',
+    title: 'Inventario con recetas y alertas',
+    text: 'Cada producto tiene su receta de ingredientes y se descuentan al vender. Cuando algo baja del mínimo lo marca en rojo y te avisa en el menú; tú decides si bloquea la venta o la deja pasar.',
+    alt: 'Almacén: lista de ingredientes con stock actual y mínimo; las galletas aparecen en rojo con aviso de stock bajo',
+  },
+  {
+    id: 'etiquetas',
+    module: 'Tickets y etiquetas',
+    title: 'Ticket con total en pesos y dólares',
+    text: 'Al cobrar imprime el ticket con folio, quién atendió, método de pago, extras y el total en USD, más una etiqueta por bebida con el nombre del cliente para el vaso.',
+    alt: 'Ticket impreso: folio #0137, cappuccino con leche de soya +$15, total $90.00 y total en dólares $5.29 USD',
+    tall: true,
+  },
+  {
+    id: 'cortes-caja',
+    module: 'Cortes de caja',
+    title: 'Sabes si cuadra el efectivo',
+    text: 'Abres con tu fondo inicial y al cerrar cuentas el efectivo: el sistema te muestra lo esperado, lo contado y la diferencia. Cada corte queda guardado y se descarga en PDF.',
+    alt: 'Corte de caja cerrado: vendedor, caja, fechas de apertura y cierre, fondo inicial, ventas en efectivo y tarjeta, total esperado, total contado y diferencia',
+    tall: true,
+  },
+  {
+    id: 'kpis',
+    module: 'KPIs',
+    title: 'Reportes que puedes descargar',
+    text: 'Ventas por hora, tendencia por día, ventas por método de pago y productos más vendidos, con descarga en PDF o Excel para tu contador.',
+    alt: 'KPIs de ventas: picos por hora con el máximo a las 11:00, tendencia por día, ventas por método de pago y productos más vendidos',
+  },
+  {
+    id: 'ventas',
+    module: 'Historial de ventas',
+    title: 'Cada venta, con su folio y método',
+    text: 'Fecha, vendedor, total y método de pago de cada venta, con tarjeta de crédito y débito por separado. Así sabes qué vendió cada quien.',
+    alt: 'Historial de ventas: folios #128 a #137 con fecha, usuario, total y método (efectivo, tarjeta de crédito o de débito)',
+  },
+  {
+    id: 'tickets-abiertos',
+    module: 'Tickets abiertos',
+    title: 'Cuentas que se pagan al final',
+    text: 'Deja abierta la cuenta de una mesa o de un cliente, ve agregando lo que pide y cóbrala cuando se vaya.',
+    alt: 'Ticket abierto #2 de la mesa 7 con galleta y matcha latte, total $125.00 y botones para agregar producto y cobrar',
+  },
+  {
+    id: 'mis-ventas',
+    module: 'Mis ventas',
+    title: 'Un panel para cada vendedor',
+    text: 'Cada vendedor ve sus ventas del día, la semana y el mes, sus tickets, lo que más vendió y una meta diaria configurable. Solo ve lo suyo.',
+    alt: 'Panel Mis ventas del vendedor: ventas de hoy $390, de la semana $390, del mes $560, 3 tickets y 6 productos vendidos, con gráfica por hora',
+  },
+  {
+    id: 'configuracion',
+    module: 'Configuración',
+    title: 'Ajustado a tu cafetería',
+    text: 'Nombre y dirección del negocio, IVA, tipo de cambio del dólar, nombres de cajas, ancho del ticket, idioma español o inglés y modo oscuro.',
+    alt: 'Configuración del sistema Coffee POS',
+  },
+];
+
+// Capturas opcionales por módulo
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/screenshots/modulos/*.{png,jpg,jpeg,webp}', { eager: true });
+const imageFor = (id: string) => {
+  const key = Object.keys(files).find((k) => k.split('/').pop()!.replace(/\.[^.]+$/, '') === id);
+  return key ? files[key].default : undefined;
+};
+const gallery = highlights.map((h) => ({ ...h, img: imageFor(h.id) })).filter((h) => h.img);
+---
+
+<section id="modulos" class="scroll-mt-16 border-t border-borde py-20 lg:py-32">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6">
+    <div class="grid gap-6 lg:grid-cols-12">
+      <h2 class="text-4xl leading-[1.08] sm:text-5xl lg:col-span-6" data-reveal>Más allá de la caja.</h2>
+      <p class="max-w-md text-texto-2 lg:col-span-4 lg:col-start-9 lg:self-end" data-reveal style="--d: 1">
+        Además de cobrar, esto ya viene incluido en el mismo plan.
+      </p>
+    </div>
+
+    <!-- Índice de módulos: dos columnas con líneas de 1px, sin tarjetas ni íconos -->
+    <ul class="mt-14 grid gap-x-10 md:grid-cols-2 lg:grid-cols-3">
+      {highlights.map((h, i) => (
+        <li class="border-t border-borde py-7" data-reveal style={`--d: ${i % 3}`}>
+          <p class="font-mono text-xs text-texto-3 uppercase tracking-[0.08em]">{h.module}</p>
+          <h3 class="mt-2 text-xl">{h.title}</h3>
+          <p class="mt-2 text-texto-2">{h.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {gallery.length > 0 && (
+    <!-- Galería: tira horizontal con scroll y snap; cada captura sobre escenario oscuro, completa (sin recortar) -->
+    <div class="mt-16" data-reveal="shot">
+      <div class="mx-auto mb-5 flex max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6">
+        <p class="text-sm text-texto-2">Capturas reales del sistema</p>
+        <div class="hidden gap-2 sm:flex">
+          <button type="button" class="btn btn-secondary size-10 p-0" data-gallery-prev aria-label="Captura anterior">
+            <span aria-hidden="true">←</span>
+          </button>
+          <button type="button" class="btn btn-secondary size-10 p-0" data-gallery-next aria-label="Captura siguiente">
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+      <ul
+        class="flex snap-x snap-mandatory items-start gap-5 overflow-x-auto scroll-smooth px-4 pb-4 [scrollbar-width:thin] sm:px-6 lg:px-[max(1.5rem,calc((100vw-1152px)/2))]"
+        style="scroll-padding-inline: max(1rem, calc((100vw - 1152px) / 2));"
+        aria-label="Capturas de los módulos"
+        data-gallery
+      >
+        {gallery.map((g) => (
+          <li class={`group shrink-0 snap-start ${g.tall ? 'w-[62vw] sm:w-[18rem]' : 'w-[88vw] sm:w-[40rem]'}`}>
+            <div class="stage rounded-[14px] p-3">
+              <figure class={`zoom shot overflow-hidden ${g.tall ? 'bg-white' : ''}`}>
+                <Picture
+                  src={g.img!}
+                  alt={g.alt}
+                  formats={['avif', 'webp']}
+                  widths={g.tall ? [320, 640] : [640, 960, 1280]}
+                  sizes={g.tall ? '(min-width: 640px) 264px, 58vw' : '(min-width: 640px) 616px, 84vw'}
+                  loading="lazy"
+                  decoding="async"
+                  class="block h-auto w-full"
+                />
+              </figure>
+            </div>
+            <p class="mt-3 text-sm"><span class="font-medium text-texto">{g.module}.</span> <span class="text-texto-2">{g.title}.</span></p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</section>
+
+<script>
+  // Botones de la galería: avanzan una captura (el navegador anima el scroll; respeta reduced-motion vía CSS).
+  const list = document.querySelector<HTMLElement>('[data-gallery]');
+  if (list) {
+    const step = (dir: number) => {
+      const item = list.querySelector<HTMLElement>('li');
+      const amount = item ? item.offsetWidth + 20 : list.clientWidth * 0.8;
+      list.scrollBy({ left: dir * amount });
+    };
+    document.querySelector('[data-gallery-prev]')?.addEventListener('click', () => step(-1));
+    document.querySelector('[data-gallery-next]')?.addEventListener('click', () => step(1));
+  }
+</script>
